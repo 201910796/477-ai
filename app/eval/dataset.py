@@ -18,8 +18,8 @@ class ManifestRow(ContractModel):
     start_ms: int = Field(ge=0)
     end_ms: int = Field(gt=0)
     event_type: EventType
-    critical: bool
-    needs_human_review: bool
+    critical: bool | None = None
+    needs_human_review: bool | None = None
     risk_axes: RiskAxes | None = None
     @property
     def window(self): return TimeWindow(start_ms=self.start_ms,end_ms=self.end_ms)
@@ -49,7 +49,12 @@ def validate_manifest(path: Path) -> list[ManifestRow]:
         load_input(row,root)
     return rows
 
-FORBIDDEN_KEYS={"event_type","ground_truth","label","labels","split","critical","needs_human_review","risk_axes","scenario_group","source_video_id","video_path"}
+FORBIDDEN_KEYS={
+    "event_type","ground_truth","label","labels","split","critical",
+    "needs_human_review","risk_axes","scenario_group","source_video_id","video_path",
+    "annotations","caption","caption_text","cot","answer","question","event_class",
+    "evidence_text","obj_bbox","obj_id","obj_label",
+}
 def check_observations(value):
     if isinstance(value,dict):
         if set(value)&FORBIDDEN_KEYS: raise ValueError("label-like key in inference observations")
@@ -58,13 +63,18 @@ def check_observations(value):
         for v in value:check_observations(v)
 
 def load_input(row: ManifestRow, root: Path) -> ModelInput:
-    # Pre-extracted, versioned inputs are produced by trusted ingestion, not annotation conversion.
+    # Observations are produced by trusted ingestion, never annotation conversion.
     mi=ModelInput.model_validate_json(safe_path(root,row.input_path).read_text(encoding="utf-8"))
     if (mi.sample_id,mi.camera.id,mi.window.start_ms,mi.window.end_ms)!=(row.sample_id,row.camera_id,row.start_ms,row.end_ms):
         raise ValueError("manifest/input identity mismatch")
     check_observations(mi.temporal_state.model_dump(mode="json"))
-    if not mi.temporal_state.feature_version:raise ValueError("feature_version required")
+    state=mi.temporal_state
+    has_observations=(state.person_count is not None or state.vehicle_count is not None
+        or bool(state.tracks or state.events or state.relations or state.quality))
+    if has_observations and not (state.feature_version and state.feature_version.strip()):
+        raise ValueError("feature_version required for observations")
     if mi.clip_ref and not re.fullmatch(r"clip_[a-z0-9_]+",mi.clip_ref):raise ValueError("clip_ref must be an opaque token")
     for e in mi.evidence:
-        if not re.fullmatch(r"frame_[a-z0-9_]+",e.media_ref): raise ValueError("media_ref must be an opaque frame token")
+        if not re.fullmatch(r"(?:frame_[a-z0-9_]+|media_[a-f0-9]{64})",e.media_ref):
+            raise ValueError("media_ref must be an opaque frame token")
     return mi

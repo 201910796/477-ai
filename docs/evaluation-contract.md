@@ -30,6 +30,37 @@ B가 features-only면 B/C 모두 같은 관측 feature로 비교한 실험과 ra
 프레임 수/해상도/기간/feature version, provider model/prompt version, token/usage/cost, 코드 commit을 저장하세요.
 누락된 risk 정답·비용·rank 시나리오는 N/A로 표시합니다.
 
+## 1.1 부분 주석 / annotation 입력 경계
+
+단일 runner와 batch는 `--asset-map`(선택 `--asset-root`)을 받으며 동일한
+app/eval/pipeline.py의 fixed sampling→resolver 주입→execute 경로를 사용한다.
+prepared input의 canonical JSON(sort_keys/compact/UTF-8) SHA256을 공통 기록한다.
+batch는 resolved clip SHA가 manifest media SHA와 같은지도 확인한다.
+전처리 실패는 preprocessing_error/review/null/refs[]로 남기며 모델 latency/cost는null다.
+
+timings.preprocessing_ms는 공통 sampling/hash 확인, execution_wall_ms는 execute 전체,
+adapter_cv_preprocessing_ms/worker_ms는 execution 내부 구간이다(총합에 중복 추가하지 않음).
+end_to_end_ms는 evaluate_input 전체이며 manifest/입력 파일 읽기·결과 쓰기는 제외한다.
+provider_ms는 분리 측정할 수 없어null이다. p50/p95/p99는 nearest-rank이며 count/coverage 필수다.
+클래스별 support/TP/FP/FN/recall/F1, normal denominator와 error phase/count도 함께 기록한다.
+
+MP4 companion parser `parse_annotations(document, event_mapping=...)`는 평가 전용이다.
+명시 event_class mapping을 받아 GT/video metadata를 반환하며 ModelInput/window/split/group를
+생성하지 않는다. caption/cot/answer/bbox/frame hints는 평가 전용 복사본에만 남는다.
+실제 fps/PTS/frame 번호 기준과 동일 사건 multiview grouping은 데이터 담당 확인이 필요하다.
+
+test에 실제 asset-map을 사용하려면 frozen config에 asset_map_sha256과
+preprocessing_version=ffmpeg-fixed-grid-v1을 추가해야 한다. 이 guard는 code/weights를
+동결했다는 뜻이 아니므로 실제 validation 완료 전 test 실행을 승인하지 않는다.
+
+risk_axes 각 축이 null이면 해당 축 MAE 비교에서 제외하고 축별 measured pair count/coverage를 함께 기록한다.
+전체 scalar 비교 개수와 완전한 sample pair 개수를 구분하여 일부 축을 4로 나눠 숨기지 않는다.
+MP4 동봉 JSON에 없는 critical/needs_human_review 주석은 null이며 false를 기본 정답으로 만들지 않는다.
+critical/review recall은 명시 주석의 분모와 annotation coverage를 함께 표시한다.
+event_class mapping은 평가자 전용이며 annotation caption/cot/answer/bbox/frame_id는 inference input에 복사하지 않는다.
+raw-frame 입력은 빈 temporal_state에서 feature_version이 없을 수 있다. 실제 관측이 있으면 trusted extractor version이 필요하다.
+fixed sampler의 중립 frame/media tokens는 resolver의 실제 bytes에 연결되며 annotation refs를 대신 사용하지 않는다.
+
 validation: python -m app.eval.batch --manifest data/manifest.jsonl --adapter local_cv --split validation --output outputs/A-validation-001
 test: 같은 명령에 --split test --allow-test --lock data/dataset.lock.json --run-config data/run_config.json
 동일 output 경로를 재사용하지 않습니다. frozen run config는 실제 모델 버전/전처리/prompt/코드 기록으로 바꿉니다.

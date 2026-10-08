@@ -1,15 +1,19 @@
 {
-  "app/config.py": "664a3e657dfcdae8510b58561f5f42fcc2849720e8b7df7884caea673d02f0a9",
+  "app/config.py": "1ffe16bc829b757a7e26fc9391a3297115cba601bfb965f193808e9d1db936a5",
   "app/models/base.py": "6c2d45a7be41526a136720f7eadb43ec1e2048350be275533ef88167272ae5fc",
-  "app/models/execution.py": "a50af7987bb23904cfb21d688547deea3a488870cd747d02829bd5a733dfd270",
-  "app/models/media.py": "a116d4944c916ca15d4ef16a20b547811dfec860a65b8443acc8098246100f42",
-  "app/models/registry.py": "7c867301aac19745d7382dea693ba1e7c0d7254d8de614bf194c82d2bb669201",
+  "app/models/benchmark_assessment.py": "023cb41168c0ea418a5d1eb4766d9da6df7630b366b398a8a7e31c7eea0cc3d5",
+  "app/models/benchmark_media.py": "d76b13cc1c2e7c326f1970a6e1048acb0d0cd74d382144e797d0d773481aefca",
+  "app/models/budget.py": "08dc38808cfac1acbb91c679058f20f34aa586d62da7ef5a239835ba67e9d870",
+  "app/models/execution.py": "984343239c17e301cc3085b6c6162c1c50fbe6e69535c5a90d53b11cc9b79d5a",
+  "app/models/media.py": "ca73a161b64f1352c18764fe7dbe6b6baec0f327efbeaeb207ecb9c1f2aa6444",
+  "app/models/registry.py": "645199886926ec76f21c944e3e3bb84ca8c5bb08992c36b3585526bb9d63e254",
   "app/repositories/protocol.py": "1b77aab50e8195bf82d96602cdaeec6d8bf92188276472988d57221d389fb623",
   "app/schemas/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "app/schemas/benchmark.py": "ddc4f4660d44c1335037dd138d977d2aecd163021fd45e987db219e4664a3616",
   "app/schemas/incident.py": "a89a4d51f56eeb0c2a5a2719fff90f9d7292857ec4ffee1455de7f57f0647904",
-  "app/schemas/model.py": "5f16b13a637c481679b070695a6b816f21891b9133eedb27d4a126ce4d0ca985",
-  "docs/api-contract.md": "9c45389ffcae1bd4aa3b22ec0bde6f31e7dfa0f21383819d905f172f0db13f32",
-  "docs/dataset-handoff.md": "1450c9b3f2786ad8dbfb63e52c5863527d9efd4a909c7bb2fbcfdc70f8e73044",
-  "docs/evaluation-contract.md": "9bdef41c0b86987f0a3f2f30c03a8481a0764c4438273928748e96389f70ef83",
-  "docs/model-contract.md": "fe94eec56d84b0a1cbd06e9d42ad96886ea935cc7c6bbb25a6acd5a69d4bae25"
+  "app/schemas/model.py": "021ef350a647e556b9820c247f358ec281de22ddb2c3640c9e46d75f98a69818",
+  "docs/api-contract.md": "b38bdeb10c22012de56c53977c381ab4a4a75dbb2ddccbbfc2164becfea2345c",
+  "docs/dataset-handoff.md": "425b0788172dec163a6a09d4da34b87928a32e7e2dce6068a4d5fd5946a3650d",
+  "docs/evaluation-contract.md": "47a467b6fbb593f4c824bf5f76789757122c326ba27932e1f7e56ed70431d98c",
+  "docs/model-contract.md": "046209d1daf86b17799cf28bf643bd0ad272b4b340563d01cc1663d1d1fe14ba"
 }

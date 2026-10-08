@@ -14,3 +14,6 @@ outputs/**
 media/**
 !media/.gitkeep
 .worktrees/
+.venv-benchmark/
+artifacts/models/
+runs/

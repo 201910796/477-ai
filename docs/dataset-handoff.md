@@ -35,3 +35,17 @@ DATA_CARD: AI Hub dataset 이름/ID/버전, 라이선스·재공유 범위, 전�
 2. validation에서 모델·prompt·threshold·sampling 고정.
 3. scripts/freeze_dataset.py로 manifest + run config hash 고정.
 4. test 명령은 --allow-test + --lock + --run-config 필요. 최종 test 실패 샘플로 다시 튜닝하지 않습니다.
+
+## MP4 + videos/annotations JSON 추가 규격
+
+동봉 JSON의 videos[]는 filename/width/height/date/time/length/cctv metadata/source/view 정보를 가진다.
+annotations(event_class/question/caption/cot/answer/evidence의 frame_id/obj_id/obj_bbox/obj_label)는 평가 정답 영역이며
+추론 inputs/temporal_state/prompt/frame sampling에 넣지 않는다. 원본 filename의 lo_ 등 라벨 힌트도 provider에 보내지 않는다.
+같은 예시 사건 lo_e1015의 c1/c2는 동일 scenario_group으로 동결하고 별도의 source_video_id를 사용한다.
+중립 sample_id와 clip/frame token을 생성하고 sampling window/grid는 정답 시작·끝/frame hints와 독립적으로 정한다.
+실제 MP4 bytes의 checksum/decoder PTS로 납품 metadata와 추출 frame을 검증한다. annotation frame 번호의 fps를 추정하지 않는다.
+한국어 event_class→공통 EventType mapping은 평가자 전용이다. 예시 '특정 구역 내 지속 배회'는 loitering 대상이지만
+다른 event class, normal/negative, critical/review/risk 축 주석 규칙은 별도 명시 확인이 필요하다.
+예시에 없는 critical/review/risk 정답을 caption/answer에서 임의로 생성하지 않는다. 미주석 위험축 각각은 null이다.
+camera id/view 매핑은 납품 규칙으로 정하며 영상별 실제 fps/PTS와 annotation frame numbering 기준도 전달해야 한다.
+이 JSON 예시만으로 실제 media 납품·class mapping·분할·주석 합의를 완료 처리하지 않는다.

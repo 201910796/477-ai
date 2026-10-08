@@ -1,4 +1,4 @@
-# 프론트 API 계약 1.0 — Figma 확인 + 명시적 보완
+# 프론트 API 계약 1.1 — Figma 확인 + 명시적 보완
 
 출처: https://www.figma.com/design/pK7WGcPjkNjP7zaAbK4c13/477?node-id=61-14&m=dev
 확인: 2026-10-06. 링크 node 61:14는 API 주석 페이지 60:2의 사각형입니다.
@@ -24,6 +24,7 @@ docs/sources/figma-api-extract.json에 관련 원문을 보관했습니다. Figm
 - Figma 예시 risk=94, axes=(.9,.95,.8,.85)는 식으로 계산하면 89입니다. axes를 바꾸지 않고 서버 89를 사용합니다.
 - review는 UI 표시 상태이며 위험 등급과 별개입니다. level_counts는 review를 우선 집계하여 중복 카운트를 피합니다.
 - 실패는 risk=null, level=UNKNOWN을 허용합니다. 프론트는 '위험도 미측정'으로 표시하고 review 카드로 유지합니다.
+- risk_axes 내부 축도 미측정 null을 허용합니다. 일부 축만 측정돼도 총 risk는 null/UNKNOWN이며 review로 유지합니다.
 - 원본에 없던 revision, 전체 cameras snapshot, Idempotency-Key 및 restore API를 추가했습니다.
 - MP4는 파일 응답이며 RTSP/HLS 라이브 스트리밍 서버는 아닙니다. 영상은 사용자에게 공급받아야 합니다.
 
@@ -37,7 +38,7 @@ request_dispatch → dispatch_requested=true 기록, 외부 신고/호출 없음
 이 의미를 frontend가 구현 전에 확인하고 MAIN이 계약/테스트를 함께 고칩니다.
 
 ## WS
-{event_type:'snapshot', schema_version:'1.0', revision, active_count, total_cameras:477,
+{event_type:'snapshot', schema_version:'1.1', revision, active_count, total_cameras:477,
  configured_cameras:9, suppressed_count, level_counts, incidents:[...], cameras:[...]}
 클라이언트는 전체 snapshot으로 덮어쓰고 revision이 낮은 메시지는 무시합니다.
 새 연결/재연결 첫 snapshot은 완전한 현재 상태입니다. cameras를 다시 GET할 필요가 없습니다.
@@ -48,3 +49,16 @@ request_dispatch → dispatch_requested=true 기록, 외부 신고/호출 없음
 memory repository 단일 프로세스, --workers 1. restart 시 incidents/audit/idempotency 초기화됩니다.
 영구 DB·outbox·인증·rate limit·실시간 CV ingestion이 없는 개발용 서버입니다.
 production 모드는 지원하지 않습니다. 외부 공유/운영 전에 docs/extension-plan.md 과제를 수행하세요.
+
+## 개발 모델 연결
+
+`app.state.ingest_model_input(ModelInput)`는 HTTP endpoint가 아닌 내부 연결입니다.
+모델 실행 후 상태 잠금 안에서 Incident/Suppressed를 저장하고 변경 snapshot을 발행합니다.
+같은 sample_id/같은 입력 재전송은 기존 ACK/dismiss/restore 상태와 revision을 보존합니다.
+같은 sample_id/다른 입력 또는 미등록 camera는 거절합니다. 새 관측에는 새 sample_id가 필요합니다.
+완료된 입력 재전송은 실행 전에 저장 판정을 조회하여 재추론하지 않습니다.
+동일 sample_id의 동시 호출도 별도 실행 lock으로 직렬화하며 상태 lock을 잡은 채 모델을 기다리지 않습니다.
+memory cache 밖의 provider 재시도/취소/재시작 후 요청·과금 idempotency는 보장하지 않습니다.
+memory ledger는 demo reset/restart 때 초기화됩니다. 실제 모델·영상·실측 pipeline의 완료를 뜻하지 않습니다.
+모델로 만든 suppressed의 미측정 stage1_label/resumed_walking은 null입니다.
+프론트 확인 시 이 null 확장도 포함해야 합니다. 실제 응답 예제는 `handoffs/frontend.md`에 저장합니다.

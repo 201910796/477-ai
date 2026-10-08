@@ -1,6 +1,6 @@
 from datetime import datetime, timezone
 from app.schemas.incident import Incident, AckBody
-from app.schemas.model import RiskAxes
+from app.schemas.model import RiskAxes, SCHEMA_VERSION
 from app.services.risk import risk_score, risk_level
 
 class MemoryStore:
@@ -10,6 +10,8 @@ class MemoryStore:
         self.suppressed: dict[str, dict] = {}
         self.audit: list[dict] = []
         self.requests: dict[str, tuple[str, dict]] = {}
+        # First accepted input wins until an explicit demo reset. Caller holds the lock.
+        self.assessment_inputs: dict[str, dict] = {}
         self.revision = 0
         self.step = 1
         self.cameras = [{"id":f"CAM_{i:02d}","name":f"CAM {i:02d}","location":"demo",
@@ -41,7 +43,7 @@ class MemoryStore:
         counts = {k:0 for k in ["critical","high","medium","low","review","unknown"]}
         for i in incidents:
             counts["review" if i.needs_human_review else i.level.lower()] += 1
-        return {"event_type":"snapshot","schema_version":"1.0","revision":self.revision,
+        return {"event_type":"snapshot","schema_version":SCHEMA_VERSION,"revision":self.revision,
             "active_count":len(incidents),"total_cameras":477,"configured_cameras":len(self.cameras),
             "suppressed_count":sum(not s["restored"] for s in self.suppressed.values()),"level_counts":counts,
             "incidents":[i.model_dump(mode="json") for i in incidents],"cameras":self.camera_states()}
@@ -65,6 +67,7 @@ class MemoryStore:
         return {"ok":True,"incident":result.model_dump(mode="json"),"revision":self.revision}
     def demo(self, step: int):
         self.incidents.clear(); self.suppressed.clear(); self.step = step
+        self.assessment_inputs.clear()
         # Keep idempotency ledger: replaying an old key must never repeat an action.
         now = datetime.now(timezone.utc)
         if step == 2:

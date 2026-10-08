@@ -2,8 +2,10 @@ from typing import Any, Literal
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 EventType = Literal["normal", "collapse", "conflict", "intrusion", "loitering", "uncertain"]
+SCHEMA_VERSION = "1.1"
 class ContractModel(BaseModel):
-    model_config = ConfigDict(extra="forbid", frozen=True, allow_inf_nan=False)
+    # model_copy/model_construct can bypass validation, including nested values.
+    model_config = ConfigDict(extra="forbid", frozen=True, allow_inf_nan=False, revalidate_instances="always")
 
 class CameraContext(ContractModel):
     id: str = Field(min_length=1)
@@ -36,7 +38,7 @@ class TemporalState(ContractModel):
     feature_version: str | None = None
 
 class ModelInput(ContractModel):
-    schema_version: Literal["1.0"] = "1.0"
+    schema_version: Literal["1.0", "1.1"] = SCHEMA_VERSION
     sample_id: str = Field(min_length=1)
     camera: CameraContext
     window: TimeWindow
@@ -53,10 +55,14 @@ class ModelInput(ContractModel):
         return self
 
 class RiskAxes(ContractModel):
-    severity: float = Field(ge=0, le=1)
-    imminence: float = Field(ge=0, le=1)
-    exposure: float = Field(ge=0, le=1)
-    persistence: float = Field(ge=0, le=1)
+    severity: float | None = Field(default=None, ge=0, le=1)
+    imminence: float | None = Field(default=None, ge=0, le=1)
+    exposure: float | None = Field(default=None, ge=0, le=1)
+    persistence: float | None = Field(default=None, ge=0, le=1)
+
+    @property
+    def is_complete(self) -> bool:
+        return all(value is not None for value in self.model_dump().values())
 
 class ModelMetadata(ContractModel):
     adapter: str
@@ -69,7 +75,7 @@ class ModelMetadata(ContractModel):
     prompt_version: str | None = None
 
 class ModelAssessment(ContractModel):
-    schema_version: Literal["1.0"] = "1.0"
+    schema_version: Literal["1.0", "1.1"] = SCHEMA_VERSION
     event_type: EventType
     event_confidence: float = Field(ge=0, le=1)
     # null = unmeasured; do not fabricate axes for provider/schema failures.
@@ -82,6 +88,9 @@ class ModelAssessment(ContractModel):
     metadata: ModelMetadata
     @model_validator(mode="after")
     def unknown_goes_to_review(self):
-        if (self.risk_axes is None or self.event_type == "uncertain" or self.metadata.error_code) and not self.needs_human_review:
+        incomplete = self.risk_axes is not None and not self.risk_axes.is_complete
+        if self.schema_version == "1.0" and incomplete:
+            raise ValueError("partial risk axes require schema_version 1.1")
+        if (self.risk_axes is None or incomplete or self.event_type == "uncertain" or self.metadata.error_code) and not self.needs_human_review:
             raise ValueError("unknown/error assessment requires human review")
         return self
