@@ -107,3 +107,38 @@ MAIN checked official Cloudflare Clef $0.24/M input and DeepSeek currentflash
 off-peak rates0.15miss/0.003hit/0.60output USDperM; UTC2026-10-08 15:32 outside
 peak windows. Selectedprofile records theseusageestimate rates (notinvoice).
 Actual fresh12run started under results/full_pipeline_v2; v1 untouched.
+
+Actual v2 completed12 sequentialitems, allYOLO/Clefok, all12VLMactualresponses;
+policyok2/error10, schema12true/ref12true,18source humanreviewviolations, GTunreviewed.
+NoAPIexecutionerrors/fallback. Actualv2 usageestimate0.186942456USD, invoiceunknown.
+Prior87ledgeridentical,25newreservations (13DeepSeek inclv1,12Clef). v1oldpeakestimate
+0.0200322 retained; offpeaktariff reconciliation0.0100161, totalnewusageestimate0.196958556.
+CSVdefault128KiB readerlimit initiallyfailedonlyofflineanalysis, fixed32MiB readers;
+new compact_csv exports12readablerows,max8477chars withoutchangingmetrics/errors/events;
+fullCSV/normalized/resultjson untouched. Threeofflinecompaction testsPASS0.18s.
+ActualauditPASS36rawpairs/768JPEGhashmaps/rawconvertedunchanged/791input/7evaluator/
+243originalhashes;3secretvalues scanned254textfiles,nohits. Addedofflineaudit.py helper.
+Frozenprompt lacks explicit nullaxis/.90review threshold though validatorenforces it;
+RESULTS reportsinstructiongap aspossiblecontributingbenchmarkissue, nocriteriachanged.
+MAINfinalfull534PASS88.06s/contracts match/portable163PASS30.71s.
+Final sequential readonly reviewer inspecting actualartifacts/docs; nofurtherAPIcalls.
+
+## 최종 인계 상태 — 2026-10-09 한국 시각
+
+마지막 reviewer가 사용량 제한으로 중단됐으나 사용자 재개 지시에 따라 같은 실제 에이전트
+`/root/new_pipeline_contract_review`를 재개했고 기술적 무결성·인계 FINAL PASS를 받았습니다.
+추가 API 호출·모델 추론·코드 수정은 없었습니다. 독립 CSV 변환 3테스트 PASS(0.14초),
+실제 CSV12행/원본36쌍/JPEG768매핑/해시 및 출력 보존을 재확인했습니다.
+최신 감사 텍스트 수는 255이며 실제 비밀값 3개 유출 0입니다.
+
+완료: 새 독립 벤치마크 폴더, 12고정 문제, 단계별 평가기·검수 대기 정답, 실제 전체 실행,
+문제당 한 행 CSV와 입력/원본/변환 파일, 설치·모델 교체·수정 허용 범위 README,
+최종 RESULTS.md. MAIN 저장소534/독립163 테스트와 계약 검사는 통과했습니다.
+
+미완료·막힘: 정답 박스·호출 정책·사건 라벨·근거 내용 검수 및 정상 대조 영상이 없어
+검출·라우팅·사건 정확도와 누락·오경보를 확정하지 못합니다. GPU/상주 YOLO·새 프롬프트·
+dense/crop 실험은 후속 제안이며 실행됐다고 보고하지 않습니다.
+
+실제 모델 실행은 각12/12지만 검토 정책 통과는2/12입니다. VLM 검토 표시 위반은
+10문제/18영상 등장입니다. 고정 프롬프트와 검토 조건의 설명 차이도 원인 후보로 남겼습니다.
+이 최종 PASS는 모델 성능 합격이 아닙니다. 보호 원본은 유지했고 v1 중단 결과도 보존했습니다.

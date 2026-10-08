@@ -11,6 +11,7 @@ from pipeline477.io import write_json
 HERE = Path(__file__).resolve().parent
 
 def analyze(output):
+    csv.field_size_limit(32 * 1024 * 1024)
     with (output / "results.csv").open(encoding="utf-8-sig", newline="") as stream:
         records = list(csv.DictReader(stream))
     structured = ["sources", "models", "ground_truth", "stage_inputs", "stage_outputs", "metrics",

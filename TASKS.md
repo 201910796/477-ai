@@ -319,4 +319,35 @@ focused35pass/full121pass/hashPASS. 중립 window grid·실제 PTS·raw temporal
   at15:32UTC Oct08 DeepSeek off-peak applies (0.15/0.003/0.60USDperM).
 - RUNNING: MAIN full_pipeline_v2 fresh12items; v1 retained separately. Runtime
   config records off-peak usage-estimate tariff; invoice cost remainsunknown.
+- DONE: full_pipeline_v2 actual12items complete; YOLO12ok/Clef12ok/VLM12actual
+  responses, finalpolicyok2/error10. Schema12/12+inputreference12/12, humanreview
+  policyinvalid18sourceoccurrences; semanticGTscoringstillBLOCKED (0reviewedtruth).
+- DONE: CSV12rows, originalraw36pairs, compactCSVmax8477characters, actualauditPASS
+  768JPEGhashes/maps/unchangedconvertedoutputs,791input+7evaluator+243originalhashes;
+  secretvalues3/textfiles254,nohits. Original87ledgeridentical; new13DeepSeek+12Clef.
+- DONE: actualv2 usageestimate0.186942456USD, invoiceunknown; v1partialretained.
+  CSVreader128KiB defaultlimit fixed inofflinehelpers; nofrozen scoringchange.
+- DONE: finalMAINfull534PASS88.06s/contractsFrozenmatch/portable163PASS30.71s.
+  Finalreadonly actualresultsreview PASS; README+RESULTS handoff updated.
+- DONE 2026-10-09 KST: user resumed interrupted final reviewer after agentusage
+  limit; same actual `/root/new_pipeline_contract_review` completed FINALPASS
+  technical integrity/handoff (not model performance). IndependentCSV12rows/
+  raw36pairs/768JPEG/791input+7evaluator+243originalhashes andpolicy18violations
+  verified; independentCSV3testsPASS0.14s. AdditionalAPI/modelcalls0.
+- HANDOFF READY: new_477_piprline/README.md, DESIGN.md, ground_truth pendingfiles,
+  results/full_pipeline_v2/results_readable.csv + all referenced raw/normalized
+  responses, RESULTS.md. Existing benchmark/data/originalbaseline protected.
+- STILL BLOCKED: reviewed bbox/routing/event/evidence truth and normal controls/
+  operating zones/policy; precision/recall/mAP/event/route/evidence quality N/A.
+  Actual output-policy pass2/12, not a claim all12models passed performance.
+
+## 2026-10-09 정답 확보·팀원 CSV 자동 채점 요청
+
+- RUNNING MAIN: 기존12문제/64프레임 유지, 직접 영상 프레임 검수로 사건/라우팅 정답 작성.
+  전문가 gold GT로 표시하지 않고 AI visual-reviewed demo reference로 출처 기록.
+- RUNNING sequential `/root/annotation_detector` model_engineer: 독립 RT-DETR-L
+  박스 초안 도구+테스트 2파일만. MAIN 공식 자산 rtdetr-l.pt 다운로드 완료66,511,432bytes.
+  평가 YOLO26s를 자체 정답으로 재사용하지 않음. 24프레임 박스 초안 후 직접 검수.
+- PLANNED: ground_truth 검수/동결 → 팀 입력/빈CSV/자동채점Python 패키지 → 기존결과 재채점
+  → 정답/라우팅이 준비된 뒤 파이프라인 오류 개선. 기존원본/실행결과 유지.
 

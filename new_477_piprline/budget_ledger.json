@@ -1333,3 +1333,172 @@
       "status": "error"
     },
     {
+      "id": "065c16df9fa2449d90479bac222a3d43",
+      "provider": "clef",
+      "reserved_usd": 0.03145728,
+      "usage_cost_estimate_usd": 0.006603599999999999,
+      "usage": {
+        "input_tokens": 27515,
+        "output_tokens": 0
+      },
+      "status": "ok"
+    },
+    {
+      "id": "fb7e969f8a2f4ca08c2a3c2837c4ca46",
+      "provider": "deepseek",
+      "reserved_usd": 0.058752,
+      "usage_cost_estimate_usd": 0.0099489,
+      "usage": {
+        "prompt_tokens": 64730,
+        "completion_tokens": 399,
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 64730
+      },
+      "status": "ok"
+    },
+    {
+      "id": "8c8b17a0128a43c088b9501504f6dd77",
+      "provider": "clef",
+      "reserved_usd": 0.03145728,
+      "usage_cost_estimate_usd": 0.0038131199999999997,
+      "usage": {
+        "input_tokens": 15888,
+        "output_tokens": 0
+      },
+      "status": "ok"
+    },
+    {
+      "id": "ad8bd5103a1246c08eac5d48387e2058",
+      "provider": "deepseek",
+      "reserved_usd": 0.058752,
+      "usage_cost_estimate_usd": 0.010049699999999998,
+      "usage": {
+        "prompt_tokens": 64742,
+        "completion_tokens": 564,
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 64742
+      },
+      "status": "error"
+    },
+    {
+      "id": "dced37e6604b49f1a139ea76db7478a9",
+      "provider": "clef",
+      "reserved_usd": 0.03145728,
+      "usage_cost_estimate_usd": 0.005377679999999999,
+      "usage": {
+        "input_tokens": 22407,
+        "output_tokens": 0
+      },
+      "status": "ok"
+    },
+    {
+      "id": "385927a6ab854693b8c6165c441637eb",
+      "provider": "deepseek",
+      "reserved_usd": 0.058752,
+      "usage_cost_estimate_usd": 0.0100302,
+      "usage": {
+        "prompt_tokens": 64728,
+        "completion_tokens": 535,
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 64728
+      },
+      "status": "error"
+    },
+    {
+      "id": "1525dbbc696546e78a2a4add68361461",
+      "provider": "clef",
+      "reserved_usd": 0.03145728,
+      "usage_cost_estimate_usd": 0.007853279999999999,
+      "usage": {
+        "input_tokens": 32722,
+        "output_tokens": 0
+      },
+      "status": "ok"
+    },
+    {
+      "id": "595886cf195e42818d44732c4cdf871e",
+      "provider": "deepseek",
+      "reserved_usd": 0.058752,
+      "usage_cost_estimate_usd": 0.010103999999999998,
+      "usage": {
+        "prompt_tokens": 64748,
+        "completion_tokens": 653,
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 64748
+      },
+      "status": "error"
+    },
+    {
+      "id": "c551168902324ddeb66872b91c0304cf",
+      "provider": "clef",
+      "reserved_usd": 0.03145728,
+      "usage_cost_estimate_usd": 0.007676639999999999,
+      "usage": {
+        "input_tokens": 31986,
+        "output_tokens": 0
+      },
+      "status": "ok"
+    },
+    {
+      "id": "32d6c8ad5bc447b5aef8b8ba702320f3",
+      "provider": "deepseek",
+      "reserved_usd": 0.058752,
+      "usage_cost_estimate_usd": 0.010148099999999998,
+      "usage": {
+        "prompt_tokens": 64758,
+        "completion_tokens": 724,
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 64758
+      },
+      "status": "error"
+    },
+    {
+      "id": "83be9c3d413b4045a8df47a3d378983f",
+      "provider": "clef",
+      "reserved_usd": 0.03145728,
+      "usage_cost_estimate_usd": 0.00737496,
+      "usage": {
+        "input_tokens": 30729,
+        "output_tokens": 0
+      },
+      "status": "ok"
+    },
+    {
+      "id": "2c854d320e6c4eb19050eb9236cdc29b",
+      "provider": "deepseek",
+      "reserved_usd": 0.058752,
+      "usage_cost_estimate_usd": 0.010190849999999998,
+      "usage": {
+        "prompt_tokens": 64743,
+        "completion_tokens": 799,
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 64743
+      },
+      "status": "error"
+    },
+    {
+      "id": "f9b05814527f4c49bf22c0feb4a358c8",
+      "provider": "clef",
+      "reserved_usd": 0.03145728,
+      "usage_cost_estimate_usd": 0.007511759999999999,
+      "usage": {
+        "input_tokens": 31299,
+        "output_tokens": 0
+      },
+      "status": "ok"
+    },
+    {
+      "id": "5d3b35dba54f402ebff081ef8b89745c",
+      "provider": "deepseek",
+      "reserved_usd": 0.058752,
+      "usage_cost_estimate_usd": 0.0101931,
+      "usage": {
+        "prompt_tokens": 64690,
+        "completion_tokens": 816,
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 64690
+      },
+      "status": "error"
+    }
+  ]
+}

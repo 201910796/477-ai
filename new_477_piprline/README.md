@@ -1,5 +1,9 @@
 # 477: YOLO → Clef → VLM 벤치마크
 
+실제 실행 요약은 [RESULTS.md](RESULTS.md), 최종 보기용 12행 표는
+[results_readable.csv](results/full_pipeline_v2/results_readable.csv)입니다.
+YOLO/Clef/VLM 실제 실행은 각각 12/12이며 사건 정확도는 검수 정답 부족으로 평가 불가입니다.
+
 이 폴더 전체를 팀원에게 전달하면 원본 저장소 없이 실행할 수 있습니다. 이 README만
 따라 설치·모델 설정·검사·실행하면 됩니다. **README 파일 하나만 전달하면 영상과 코드가 없어 실행할 수 없습니다.**
 실제 영상·가중치·고정 프레임·실행 코드와 함께 폴더 전체를 전달하세요. API 키와 `.env`는 전달하지 마세요.
@@ -126,9 +130,20 @@ deepseek-flash는 비혼잡 시간에 입력 미캐시 $0.15/캐시 $0.003/출�
 Cloudflare 무료 Neurons 일일 제한은 이 로컬 달러 원장과 별개입니다.
 단일 프로세스·순차 실행만 지원하며 같은 예산 원장을 동시에 여러 프로세스가 수정하면 안 됩니다.
 이번 실제 실행은 `--config config/full_pipeline.json`을 지정합니다. 이 프로필은 Clef 실행
-실패 시 VLM으로 대체 진행하고 상위 실패를 보존합니다. 성공한 전체 파이프라인으로 처리하지 않습니다.
+오류·미완료 시 VLM으로 대체 진행하고 상위 실패를 보존합니다. 상위 YOLO 실패로 Clef를
+실행하지 못한 경우도 포함합니다. 대체 실행을 전체 파이프라인 성공으로 처리하지 않습니다.
 기본 `config/models.json`은 상위 실패 시 중단하는 대조 설정입니다.
 실제 Clef 판단이 정상적으로 호출을 생략하면 두 설정 모두 VLM을 skipped로 기록합니다.
+
+`python -B audit.py --output results/my_paid_01 --env-file .env`로 고정 파일 해시,
+CSV 행 수, 실제 요청의 64이미지와 JPEG 해시, 원본 응답과 변환 출력의 일치,
+알려진 비공개 정답 필드와 환경변수 키의 유출 여부를 검사할 수 있습니다.
+키 값은 출력하지 않으며 결과는 `audit.json`에 저장합니다. 사건 정답률 검사는 아닙니다.
+
+보기용 CSV는 `python -B compact_csv.py --output results/my_paid_01`로 만듭니다.
+`results_readable.csv`도 문제당 한 행이며 수치·사건 출력은 같습니다. 긴 YOLO 박스 목록과
+64이미지 상세 해시만 실제 normalized 파일 링크로 대체합니다. 원본 CSV/JSON은 유지합니다.
+Python CSV를 직접 읽는 경우 `csv.field_size_limit(32 * 1024 * 1024)`를 먼저 설정하세요.
 
 ## 5. 문제 목록
 
